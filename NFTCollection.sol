@@ -1,39 +1,49 @@
 pragma solidity 0.5.0;
 
+import "hardhat/console.sol";
+
 contract NFTCollection{
 	//somewhere here declare an event
+    event memberCreated(string name, uint256 nftNum);
 
 	struct ID{
-		string name; //not sure if we want names visible on chain
-		string eid;
+		bytes32 name; //not sure if we want names visible on chain
+		bytes32 eid;
 		address walletAddress;
 		uint NftNum;   //unique number for each NFT perhaps
-		boolean validMember;
+		bool validMember;
 	}
-
+    mapping(bytes32 => bool) whitelist;
 	mapping (address => ID) members; //key is a wallet, value is ID
-	address[] collectionOwners;
+	uint256 totalMembers = 0;
+
+    function createWhitelist(string memory _eid) public {
+
+        whitelist[keccak256(abi.encodePacked(_eid))] = true;
+    }
+
 
 	function createMember(string memory _name, string memory _eid, address _address) public {
-		//require statement to ensure there does not already exist an NFT to this person
+		require(whitelist[keccak256(abi.encodePacked(_eid))] != false, "EID not in whitelist.");
 		
-		members[msg.sender] = ID(
+		members[_address] = ID(
 			{
-				name: _name;
-				eid: _eid;
-				walletAddress: msg.sender; //not sure
-				NftNum = collectionOwners.length;
-				validMember = true;
+				name: keccak256(abi.encodePacked(_name)),
+				eid: keccak256(abi.encodePacked(_eid)),
+				walletAddress: _address, //not sure
+				NftNum: totalMembers,
+				validMember: true
 			}
 		);
-		collectionOwners.push(msg.sender);
-		
-		
+
+        emit memberCreated(_name, totalMembers);
+        totalMembers++;
+        whitelist[keccak256(abi.encodePacked(_eid))] = false;
 	}
 
-	function invalidateMember(address _address, string memory _eid) {
+	function invalidateMember(address _address, bytes32 _eid) public {
 		
-		require(members[_address] != null, "This is not a current member.");
+		require(members[_address].walletAddress != address(0), "This is not a current member.");
 		require(members[_address].eid == _eid, "EID's do not match.");  //hash??
 		
 		members[_address].validMember = false; 
@@ -41,15 +51,17 @@ contract NFTCollection{
 		//maybe an emit here to state something has been invalidated	
 	}
 	
-	function checkMember(string memory _name,string memory _eid) public view returns(boolean){
-		require(members[msg.sender] != null, "This is not a current member.");
-		
-		require(members[msg.sender].name == _name, "Name does not match.");
-		require(rembers[msg.sender].eid == _eid, "EID does not match.");
+	function checkMember(string memory _name, string memory _eid) public view returns(string memory){
+		require(members[msg.sender].walletAddress !=  address(0), "This is not a current member.");
+
+		require(members[msg.sender].name == keccak256(abi.encodePacked(_name)), "Name does not match.");
+		require(members[msg.sender].eid == keccak256(abi.encodePacked(_eid)), "EID does not match.");
 		require(members[msg.sender].validMember, "This member is terminated.");
 				
 		//emit something for frontend
-		return true;					
+        console.log("yes this is a member");
+        return "Member Authenticated";
 	}
-}
 
+
+}
