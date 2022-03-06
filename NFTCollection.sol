@@ -1,5 +1,4 @@
 pragma solidity 0.5.0;
-
 import "hardhat/console.sol";
 
 contract NFTCollection{
@@ -18,10 +17,8 @@ contract NFTCollection{
 	uint256 totalMembers = 0;
 
     function createWhitelist(string memory _eid) public {
-
         whitelist[keccak256(abi.encodePacked(_eid))] = true;
     }
-
 
 	function createMember(string memory _name, string memory _eid, address _address) public {
 		require(whitelist[keccak256(abi.encodePacked(_eid))] != false, "EID not in whitelist.");
@@ -38,13 +35,13 @@ contract NFTCollection{
 
         emit memberCreated(_name, totalMembers);
         totalMembers++;
-        whitelist[keccak256(abi.encodePacked(_eid))] = false;
+        whitelist[keccak256(abi.encodePacked(_eid))] = false; //reset whitelist status to false
 	}
 
-	function invalidateMember(address _address, bytes32 _eid) public {
+	function invalidateMember(address _address, string memory _eid) public {
 		
 		require(members[_address].walletAddress != address(0), "This is not a current member.");
-		require(members[_address].eid == _eid, "EID's do not match.");  //hash??
+		require(members[_address].eid == keccak256(abi.encodePacked(_eid)), "EID's do not match.");  //hash??
 		
 		members[_address].validMember = false; 
 		
@@ -62,6 +59,5 @@ contract NFTCollection{
         console.log("yes this is a member");
         return "Member Authenticated";
 	}
-
 
 }
