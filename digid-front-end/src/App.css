@@ -1,0 +1,107 @@
+.App {
+  text-align: center;
+  position: relative;
+  width: 1512px;
+  height: 800px;
+  background: #E0A880;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  position: absolute;
+  width: 656px;
+  height: 74px;
+  left: 428px;
+  top: 50px;
+
+  font-family: Sanchez;
+  font-style: italic;
+  font-weight: normal;
+  font-size: 48px;
+  line-height: 61px;
+  text-align: center;
+
+  color: #FFFFFF;
+}
+
+.form {
+  position: absolute;
+  width: 695px;
+  height: 550px;
+  left: 408px;
+  top: 140px;
+  
+  background: #F7C8A6;
+  border-radius: 98px;
+}
+
+.boxes {
+  text-align: center;
+}
+
+.textbox {
+  border-radius: 38px;
+  width: 450px;
+  height: 40px;
+  color: grey;
+  font-size: medium;
+  border-style: none;
+}
+
+.infolabel {
+  color: white;
+  font-size: x-large;
+}
+
+.mint {
+  border-radius: 38px;
+  background: #9D8689;
+  position: absolute;
+  width: 326px;
+  height: 70px;
+  left: 180px;
+  top: 400px;
+  font-size: 36px;
+  color: white;
+  border-style: none;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.conlcude {
+  position: absolute;
+  width: 774px;
+  height: 117px;
+  left: 380px;
+  top: 720px;
+
+  font-family: Sanchez;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 36px;
+  line-height: 46px;
+  text-align: center;
+
+  color: #FFFFFF;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
